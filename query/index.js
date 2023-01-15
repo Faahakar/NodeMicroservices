@@ -7,11 +7,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const posts = {};
-app.get("/posts", (req, res) => {
+app.get("/posts", async (req, res) => {
   res.send(posts);
 });
 
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
   const { type, data } = req.body;
   if (type === "PostCreated") {
     const { id, title } = data;
@@ -19,9 +19,9 @@ app.post("/events", (req, res) => {
   }
 
   if (type === "CommentCreated") {
-    const { id, content, postId } = data;
+    const { id, content, postId, status } = data;
     const post = posts[postId];
-    post.comments.push({ id, content });
+    post.comments.push({ id, content, status });
   }
   console.log(posts);
   res.send({});
